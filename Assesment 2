@@ -1,1 +1,84 @@
 ##Assesment 2
+
+pol<-function(directory, pollutant, id=1:332) 
+{"C:/Users/NataliaA/Desktop/CourseaR/specdata/"}
+
+
+pollutantmean <- function(directory = getwd(), pollutant, id = 1:332) {
+
+    # add one or two zeros to ID so that they match the CSV file names
+    filenames <- sprintf("%03d.csv", id)
+
+    # path to specdata folder
+    # if no path is provided, default is working directory
+    filedir <- file.path("C:/Users/NataliaA/Desktop/CourseaR/specdata/", filenames)
+
+    # get the data from selected ID or IDs from the specified path
+    dataset <- read.csv(filedir, header = TRUE, sep",",na.strings="NA" )
+
+    # calculate mean removing all NAs
+    polmean <- mean(dataset[[pollutant]], na.rm = TRUE)
+
+    # return mean
+    polmean
+
+##PASO 2
+pollutantmean <- function(directory = getwd(), pollutant, id = 1:332) {
+
+    #path directory
+    "C:/Users/NataliaA/Desktop/CourseaR/specdata/"
+
+    # add one or two zeros to ID so that they match the CSV file names
+    filenames <- sprintf("%03d.csv", id)
+    
+                #Return name file
+    filenames}
+
+##>pollutantmean("specdata","sulfate", 1:10)
+##[1] "001.csv" "002.csv" "003.csv" "004.csv" "005.csv" "006.csv" "007.csv" "008.csv"
+##[9] "009.csv" "010.csv"
+
+##PASO 3: Devuelve el path completo
+pollutantmean <- function(directory = getwd(), pollutant, id = 1:332) {
+  
+  #path directory
+  "C:/Users/NataliaA/Desktop/CourseaR/specdata/"
+  
+  # add one or two zeros to ID so that they match the CSV file names
+  filenames <- sprintf("%03d.csv", id)
+  
+  # path to specdata folder
+  # if no path is provided, default is working directory
+  filedir <- file.path("C:/Users/NataliaA/Desktop/CourseaR/specdata", filenames)
+  
+    # return path file
+  filedir}
+##> pollutantmean("specdata","sulfate", 1:3)
+##[1] "C:/Users/NataliaA/Desktop/CourseaR/specdata/001.csv"
+##[2] "C:/Users/NataliaA/Desktop/CourseaR/specdata/002.csv"
+##[3] "C:/Users/NataliaA/Desktop/CourseaR/specdata/003.csv"
+  
+##Paso 4
+pollutantmean <- function(directory = getwd(), pollutant, id = 1:332) {
+  
+  #path directory
+  "C:/Users/NataliaA/Desktop/CourseaR/specdata/"
+  
+  # add one or two zeros to ID so that they match the CSV file names
+  filenames <- sprintf("%03d.csv", id)
+  
+  # path to specdata folder
+  # if no path is provided, default is working directory
+  filedir <- file.path("C:/Users/NataliaA/Desktop/CourseaR/specdata", filenames)
+
+  #get the data from id.csv
+  dataset <- read.csv(filedir, header = TRUE, sep=",", dec=".", na.strings="NA" )
+
+  #removing all NAs
+  data_p<-dataset[!is.na(dataset)]
+  #polmean <- mean(dataset[[pollutant]], na.rm = TRUE)
+       
+  # return some data, from one file
+  #polmean
+  
+}
