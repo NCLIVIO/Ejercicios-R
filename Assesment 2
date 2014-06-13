@@ -104,5 +104,31 @@ pollutantmean <- function(directory = getwd(), pollutant, id = 1:332) {
 
 	# return some data, from one file
     	my_data}
-##INSTALL PACKET PLYR TO USE LDPLY
+
+ 
+ ##Paso 6: Get data from set csv pollutantmean("specdata","nitrate",23)
+pollutantmean <- function(directory = getwd(), pollutant, id = 1:332) {
+  
+	#path directory 
+	"C:/Users/nclivio/Desktop/CourseaR/specdata/"
+  
+	# add one or two zeros to ID so that they match the CSV file names
+	filenames <- sprintf("%03d.csv", id)
+  
+	# path to specdata folder
+	# if no path is provided, default is working directory
+	filedir <- file.path("C:/Users/nclivio/Desktop/CourseaR/specdata", filenames)
+
+	#read dataset
+	dataset <- lapply(filedir, read.csv)
+	good<-complete.cases(dataset)
+	
+	#dataset [good][3]
+
+	#df<-lapply(dataset)
+	#my_data<-dataset[[pollutant]]
+	#my_data <- mean(dataset[[pollutant]], na.rm = TRUE)
+
+	# return some data, from one file
+    	good}
 
