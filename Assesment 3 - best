@@ -1,3 +1,16 @@
+#                      Finding the best hospital in a State
+
+#-----------------------------------------------------------------------------------------------------------------
+#The input should be:
+#best("state";"outcome")
+
+#state should be: AK  AL  AR  AZ  CA  CO  CT  DC  DE  FL  GA  GU  HI  IA  ID  IL  IN  KS  KY  LA  MA  MD 
+#                 ME  MI  MN  MO  MS  MT  NC  ND  NE  NH  NJ  NM  NV  NY  OH  OK  OR  PA  PR  RI  SC  SD 
+#                 TN  TX  UT  VA  VI  VT  WA  WI  WV  WY 
+# The outcome shoulbe "heart attack", "heart failure", "pneumonia"
+
+#------------------------------------------------------------------------------------------------------------------
+
 best<- function(state, outcome) {
   ##Read outcome data
   dataset <- read.csv("C:/Users/NataliaA/Desktop/CourseaR/outcome-of-care-measures.csv", na.strings="Not Available",colClasses="character")
