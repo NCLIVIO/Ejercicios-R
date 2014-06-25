@@ -1,0 +1,38 @@
+best<- function(state, outcome) {
+  ##Read outcome data
+  dataset <- read.csv("C:/Users/NataliaA/Desktop/CourseaR/outcome-of-care-measures.csv", na.strings="Not Available",colClasses="character")
+  
+    ##Define variables
+    states <- unique(dataset$State)
+    outcomes <- c("heart attack", "heart failure", "pneumonia")
+  
+    ##check that state and outcome are valid
+   if (!(state %in% states)) {
+     stop("invalid state")
+    }
+  
+    if (!(outcome %in% outcomes)) {
+     stop("invalid outcome")
+    }
+ 
+  #Get column from csv and order the rates
+  x <- dataset[dataset$State == state, ]
+  colrate<-x[, c(11, 17, 23)] 
+  my_data<- sapply(colrate, as.numeric, na.exclude)
+  
+  x <- x[order(x[, 2]), ]
+  
+    
+  if (outcome == "heart attack") {
+    best <- x[which.min(x[, 11]), "Hospital.Name"]
+  }
+  else if (outcome == "heart failure") {
+    best <- x[which.min(x[, 17]), "Hospital.Name"]
+  }
+  else {
+    best <- x[which.min(x[, 23]), "Hospital.Name"]
+  }
+  
+  best
+}
+    

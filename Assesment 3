@@ -1,7 +1,0 @@
-best<- function(state, outcome) {
-  ##Read outcome data
-  dataset <- read.csv("C:/Users/NataliaA/Desktop/CourseaR/outcome-of-care-measures.csv", colClasses="character")
-  
-    ##check that state and outcome are valid
-    y<=dataset[,7]
-}
