@@ -1,0 +1,44 @@
+#Ranking hospitals by outcome in a state
+
+rankhospital<- function(state, outcome, num) {
+  ##Read outcome data
+  dataset <- read.csv("C:/Users/NataliaA/Desktop/CourseaR/outcome-of-care-measures.csv", na.strings="Not Available",colClasses="character")
+  
+  ##Define variables
+  states <- unique(dataset$State)
+  outcomes <- c("heart attack", "heart failure", "pneumonia")
+  
+  ##check that state and outcome are valid
+  if (!(state %in% states)) {
+    stop("invalid state")
+  }
+  
+  if (!(outcome %in% outcomes)) {
+    stop("invalid outcome")
+  }
+  
+  #Get column from csv and order the rates
+  x <- dataset[dataset$State == state, ]
+  colrate<-x[, c(11, 17, 23)] 
+  my_data<- sapply(colrate, as.numeric, na.exclude)
+  
+  x <- x[order(x[, 2]), ]
+  
+  if (num == "best") {
+    num <- 1
+  }
+  
+  if (num == "worst"){
+    num <- nrow(x)
+  } 
+  
+  if (outcome == "heart attack") {
+    best <- x[order(x[, 11]), "Hospital.Name"]
+  #r<-best[num]
+  }
+    
+  best
+}
+
+
+
