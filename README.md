@@ -1,7 +1,7 @@
 Ejercicios-R
 ============
 
-##Talleres con R
+##Talleres desarrollados con R
 
 
 ###Assesment 2 
