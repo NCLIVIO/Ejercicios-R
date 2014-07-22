@@ -1,7 +1,7 @@
-Ejercicios-R
+Data Analysis Course - project and assesment
 ============
 
-#Data Analysis Course - project and assesment 
+Author:Ejercicios con R
 
 **R Soft Course**
 
