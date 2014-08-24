@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Project_Rmod by NCLIVIO</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Project_Rmod</h1>
+        <p>Taller Regresión Lineal</p>
+
+        <p class="view"><a href="https://github.com/NCLIVIO/Ejercicios-R">View the Project on GitHub <small>NCLIVIO/Ejercicios-R</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/NCLIVIO/Ejercicios-R/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/NCLIVIO/Ejercicios-R/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/NCLIVIO/Ejercicios-R">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <hr><p>title: "Relationship between transmission and miles per gallon"
+author: 'By: Natalia clivio'
+date: "Monday, July 21, 2014"</p>
+
+<h2>
+<a name="output-html_document" class="anchor" href="#output-html_document"><span class="octicon octicon-link"></span></a>output: html_document</h2>
+
+<h2>
+<a name="executive-summary" class="anchor" href="#executive-summary"><span class="octicon octicon-link"></span></a>Executive Summary</h2>
+
+<p>This report sets use the work for Motor Trend, about the automobile industry. This analysis explore the relationship between the transmission and miles per gallon (MPG). They are particularly interested the following two questions:</p>
+
+<ul>
+<li>Is an automatic or manual transmission better for MPG?</li>
+<li>Quantify the MPG difference between automatic and manual transmissions?</li>
+</ul><h2>
+<a name="analysis" class="anchor" href="#analysis"><span class="octicon octicon-link"></span></a>Analysis</h2>
+
+<p>The dataset is mtcars, taken from datasets library from R. It has 32 observations and 11 variables.</p>
+
+<p><strong>1. Preliminary Exploration of the Data</strong><br>
+There are 11 variables, since we are interested in the relationshp between mpg and other variables. </p>
+
+<div class="highlight highlight-r"><pre>data<span class="p">(</span>mtcars<span class="p">)</span>
+<span class="kp">names</span><span class="p">(</span>mtcars<span class="p">)</span>
+</pre></div>
+
+<p>we first check the correlation between mpg and other variables, by means of the <em>cor()</em> function.Where mtcars[,-1] is the dataframe without mpg. </p>
+
+<div class="highlight highlight-r"><pre>cor<span class="p">(</span>mtcars<span class="o">$</span>mpg<span class="p">,</span>mtcars<span class="p">[,</span><span class="m">-1</span><span class="p">])</span>
+</pre></div>
+
+<p>From the correlation data, we could see cyl, hp, wt and carb are negatively correlated with mpg.</p>
+
+<p><strong>2. Exploratory Analysis</strong><br>
+For this analysis we will use only the <strong>mpg</strong> and <strong>am</strong> variable so the data will be prepped accordingly. To assess whether the mpg is better for automatic or manual transmission, we will first perform an exploratory data analysis. Specifically, we will produce a box-whisker plot to see the pattern of the distribution and also to get an idea about the summary statistics.</p>
+
+<div class="highlight highlight-r"><pre>datacar<span class="o">&lt;-</span>mtcars<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="s">"am"</span><span class="p">,</span><span class="s">"mpg"</span><span class="p">)]</span>
+</pre></div>
+
+<p>The box-whisker plot of mpg over transmission mechanism shows that the median mpg is lower in automatic transmission compared to its manual counterpart. Also from the plot we see that the variation in mpg in manual transmission is larger than automatic transmission. </p>
+
+<p>*See Figure 1 in Appendix</p>
+
+<p>The first quartile of manual transmission is higher than the 3rd quartile of automatic transmission. The result clearly indicates both groups have a very different mpg average. This could be supported by the <em>t.test()</em> function.</p>
+
+<div class="highlight highlight-r"><pre>t.test<span class="p">(</span>datacar<span class="o">$</span>mpg<span class="o">~</span>datacar<span class="o">$</span>am<span class="p">,</span>conf.level<span class="o">=</span><span class="m">0.95</span><span class="p">)</span>
+</pre></div>
+
+<p><strong>3. Linear Regression</strong><br>
+A linear regression is performed to assess whether there is any difference in the average mpg between groups. It´s with mpg as dependent variable and the am as independent variable.
+The estimated difference is represented by the coefficient of am variable in the model along with p-value.</p>
+
+<div class="highlight highlight-r"><pre>lmcar<span class="o">&lt;-</span>lm<span class="p">(</span>mpg<span class="o">~</span>am<span class="p">,</span>datacar<span class="p">)</span>
+coef<span class="p">(</span><span class="kp">summary</span><span class="p">(</span>lmcar<span class="p">))</span>
+</pre></div>
+
+<p>95% confidence interval of the difference is represented by the confidence interval of the am variable</p>
+
+<div class="highlight highlight-r"><pre>confint<span class="p">(</span>lmcar<span class="p">)</span>
+</pre></div>
+
+<p>The regression coefficient indicates that the average mpg for manual transmission is 7.24 units higher compared to automatic transmissions. The confidence interval and the p-value indicate that the difference in mpg between groups is statistically different from zero.</p>
+
+<p>To Quantifying how different is the MPG between automatic and manual transmissions, is usefull the residual analysis.
+Here we adopt a stepwise algorithm to choose the best model by using <em>step()</em> function</p>
+
+<div class="highlight highlight-r"><pre>stepmodel <span class="o">=</span> step<span class="p">(</span>lm<span class="p">(</span>data <span class="o">=</span> mtcars<span class="p">,</span> mpg <span class="o">~</span> <span class="m">.</span><span class="p">),</span>trace<span class="o">=</span><span class="m">0</span><span class="p">,</span>steps<span class="o">=</span><span class="m">10000</span><span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>stepmodel<span class="p">)</span>
+</pre></div>
+
+<p>We got a model which includes 3 variables <strong>wt</strong>, <strong>qsec</strong> and <strong>am</strong>. This model captured 0.85 of total variance. </p>
+
+<p>To further optimize the model, we examine <strong>mpg ~ wt + qsec</strong> and controled by <strong>am</strong></p>
+
+<div class="highlight highlight-r"><pre>carmodel <span class="o">&lt;-</span> lm<span class="p">(</span>mpg<span class="o">~</span> <span class="kp">factor</span><span class="p">(</span>am<span class="p">)</span><span class="o">:</span>wt <span class="o">+</span> <span class="kp">factor</span><span class="p">(</span>am<span class="p">)</span><span class="o">:</span>qsec<span class="p">,</span>data<span class="o">=</span>mtcars<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>carmodel<span class="p">)</span>
+</pre></div>
+
+<p>To interpret the results, we could see this model captured 89.5% of total variance and adjusted variance is 0.879 - which is quite good. In the coefficents section, we could see when the weight increased 1000 lbs, the mpg decreased, -3.176 miles for autocars and -6.09 miles for manual cars - implicating when the weight of car increased - it might be better to choose manual cars. </p>
+
+<p>For the qsec part, when the accelaration speed droped and ¼ mile time increased 1 secs, the mpg increased 0.834 miles for automatic cars and 1.446 miles for manual cars - this implys that if the car has low accelation speed at same weight, manual cars is better for mpg. </p>
+
+<p>Finally we plot the residue and diagnostic plot for this linear model.</p>
+
+<p>*See Figure 2 in Appendix</p>
+
+<h2>
+<a name="conclusion" class="anchor" href="#conclusion"><span class="octicon octicon-link"></span></a>Conclusion</h2>
+
+<p>Based on the analysis and statistical evidence we could say that the average mpg is higher in the manual transmission group. But this conclusion might change if we consider other variables in the analysis, because the mpg is largely determined by the interplay between weight, accelaration and tramsmission.</p>
+
+<p>Therefore given the above analysis to get complete understanding, further analysis is needed to consider other variables such as weight, number of gears, etc.</p>
+
+<h2>
+<a name="apendix" class="anchor" href="#apendix"><span class="octicon octicon-link"></span></a>Apendix</h2>
+
+<h3>
+<a name="figure-1" class="anchor" href="#figure-1"><span class="octicon octicon-link"></span></a>Figure 1</h3>
+
+<p>Boxplot is the compare summary statistics between two group (automatic vs manual) transmission</p>
+
+<pre lang="r,"><code>boxplot(datacar$mpg~factor(datacar$am,label=c("Automatic","Manual")),
+        col= "pink", main="Boxplot of MPG over transmission method",xlab="Transmission",ylab="MPG")
+</code></pre>
+
+<h3>
+<a name="figure-2" class="anchor" href="#figure-2"><span class="octicon octicon-link"></span></a>Figure 2</h3>
+
+<p>The residual check and diagnostics plot</p>
+
+<pre lang="r,"><code>par(mfrow=c(2, 2))
+plot(carmodel)
+</code></pre>
+
+<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/NCLIVIO">NCLIVIO</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
